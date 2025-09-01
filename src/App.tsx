@@ -1,47 +1,22 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
-import { useAuthenticator } from '@aws-amplify/ui-react';
-const client = generateClient<Schema>();
+import CampaignManagementApp from './CampaignManagementApp';
 
 function App() {
-  const { signOut } = useAuthenticator();
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-    function deleteTodo(id: string) {
-      client.models.Todo.delete({id});
-    }
-
   return (
-    <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li
-            onClick={() => deleteTodo(todo.id)}
-          key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+        <h1 className="text-3xl font-bold text-gray-800 text-center mb-4">
+          Campaign App
+        </h1>
+        <p className="text-gray-600 text-center">
+          Tailwind CSS is now integrated! 🎉
+        </p>
+        <button className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+          Get Started
+        </button>
+        <CampaignManagementApp/>
       </div>
-      <button onClick={signOut}>Sign out</button>
-    </main>
-  );
-}
+    </div>
+  )
+} 
 
 export default App;
